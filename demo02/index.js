@@ -3,28 +3,18 @@
 var httpRequest = false
 
 function makeRequest (url) {
-  httpRequest = false
+  httpRequest = new XMLHttpRequest()
 
-  if (window.XMLHttpRequest) {  // Mozilla, Safari
-    httpRequest = new XMLHttpRequest()
-  } else if (window.ActiveXObject) { // IE
-    try {
-      httpRequest = new ActiveXObject('Msxml2.XMLHTTP')
-    } catch (e) {
-      try {
-        httpRequest = new ActiveXObject('Mscrosoft.XMLHTTP')
-      } catch (e) { }
-    }
-  }
-
-  if (!httpRequest) {
-    console.log('cannot create XMLHTTP')
-    return false
+  // ff 下此代码有效，
+  if (httpRequest.overrideMimeType) {
+    httpRequest.overrideMimeType('text/xml')
   }
 
   httpRequest.onreadystatechange = readyCall
   httpRequest.onload = onLoad
   httpRequest.open('GET', url, true)
+  // httpRequest.setRequestHeader('Content-Type',  'text/xml');
+  httpRequest.responseType = "document"
   httpRequest.send(null)
 }
 
@@ -32,7 +22,8 @@ function readyCall () {
   console.log(httpRequest)
   if (httpRequest.readyState === 4) {
     if (httpRequest.status === 200) {
-      console.log('text', httpRequest.responseText)
+      // console.log('text', httpRequest.responseText)
+      // var frag
       console.log('xml', httpRequest.responseXML)
     } else {
       console.log('error')
@@ -45,4 +36,3 @@ function onLoad (e) {
   console.log('onload', e)
 }
 makeRequest('index.html')
-makeRequest('test.xml')
