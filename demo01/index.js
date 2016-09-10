@@ -5,7 +5,7 @@ var httpRequest = false
 function makeRequest (url) {
   httpRequest = false
 
-  if (window.XMLHttpRequest) {  // Mozilla, Safari
+  if (window.XMLHttpRequest) { // Mozilla, Safari
     httpRequest = new XMLHttpRequest()
   } else if (window.ActiveXObject) { // IE
     try {
@@ -13,7 +13,7 @@ function makeRequest (url) {
     } catch (e) {
       try {
         httpRequest = new ActiveXObject('Mscrosoft.XMLHTTP')
-      } catch (e) { }
+      } catch (e) {}
     }
   }
 

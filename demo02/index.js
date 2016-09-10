@@ -13,8 +13,8 @@ function makeRequest (url) {
   httpRequest.onreadystatechange = readyCall
   httpRequest.onload = onLoad
   httpRequest.open('GET', url, true)
-  // httpRequest.setRequestHeader('Content-Type',  'text/xml');
-  httpRequest.responseType = "document"
+  // httpRequest.setRequestHeader('Content-Type',  'text/xml')
+  httpRequest.responseType = 'document'
   httpRequest.send(null)
 }
 

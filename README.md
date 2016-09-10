@@ -9,6 +9,32 @@
 
 
 ### XMLHttpRequest
+> 不要局限于其字面，XMLHttpRequest可以接受任何格式数据、支持的协议也不仅限于HTTP（file、ftp也可）
+
+Demo01
+
+- XMLHttpRequest
+  - open()
+    - method
+      - GET/POST/HEAD等必须大写
+    - url
+      - 同源策略，不能跨域名(域名或端口有差异)访问，
+    - async
+      - 使用异步模式，不要使用false，false会阻塞页面渲染影响用户体验
+  - send()
+    - 内容必须是字符串
+  - onreadystatechange
+    - responseText
+    - responseXML
+    - readyState
+      - 0 (未初始化)
+      - 1 (正在装载)
+      - 2 (装载完毕)
+      - 3 (交互中)
+      - 4 (完成)
+    - status
+    - statusText
+
 
 
 ```js
@@ -35,27 +61,9 @@ function readyCall () {
 }
 ```
 
+#### HTML解析
 
-- open()
-  - method
-    - GET/POST/HEAD等必须大写
-  - url
-    - 同源策略，不能跨域名(域名或端口有差异)访问，
-  - async
-    - 使用异步模式，不要使用false，false会阻塞页面渲染影响用户体验
-- send()
-  - 内容必须是字符串
-- responseText
-- responseXML
-- readyState
-  - 0 (未初始化)
-  - 1 (正在装载)
-  - 2 (装载完毕)
-  - 3 (交互中)
-  - 4 (完成)
-- status
-
-### HTML解析
+Demo02
 
 - XMLHttpRequest.responseXML
   - `XMLHttpRequest.responseType = "document"`  预先定义`responseType`以`Document`解析
@@ -101,9 +109,64 @@ function readyCall () {
 }
 ```
 
+#### 二进制
+
+![](demo03/arraybuffer.png)
+
+```js
+// ArrayBuffer
+fetch('avatar.jpg', 'arraybuffer').then(function(xhr) {
+  console.log(xhr);
+  var arrayBuffer = xhr.response
+  var byteArray
+  if (arrayBuffer) {
+    byteArray = new Uint8Array(arrayBuffer)
+    console.log(byteArray)
+    byteArray = new Int8Array(arrayBuffer)
+    console.log(byteArray)
+    byteArray = new Uint16Array(arrayBuffer)
+    console.log(byteArray)
+    byteArray = new Int16Array(arrayBuffer)
+    console.log(byteArray)
+  }
+})
+```
+
+更多示例请参考 [ArrayBuffer Blob TypedArray](#arraybuffer-blob-typedarray) 。
+
+#### 监测进度
+
+#### 表单数据
+
+#### 跨站
+
+
+
 ## DocumentFragment
 
+## ArrayBuffer Blob TypedArray
 
+- TypedArray
+  - Int8Array
+  - Uint8Array
+  - Uint8ClampedArray
+  - Int16Array
+  - Uint16Array
+  - Int32Array
+  - Uint32Array
+  - Float32Array
+  - Float64Array
+  - DataView
+
+
+
+
+
+参考资料
+
+- https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/Sending_and_Receiving_Binary_Data
+- http://shihuacivis.github.io/2015/12/29/20151229_arrayBuffer/
+- https://jiangdl.com/notes/possibilities-of-array-buffer-and-typed-array
 
 ## 其他
 
