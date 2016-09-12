@@ -2,59 +2,74 @@
 
 ## Index
 
-- XMLHttpRequest
-- URL
-- FileReader
-- CORS
-- FormData
+- [XMLHttpRequest](#xmlhttprequest)
+  - [HTML解析](#html解析)
+  - [二进制](#二进制)
+  - [监测进度](#监测进度)
+  - [Raw Data 上传](#raw-data-上传)
+  - [Form and FormData](#form-and-formdata)
+  - [CORS](#cors)
+- [DocumentFragment](#documentfragment)
+- [ArrayBuffer Blob TypedArray](#arraybuffer-blob-typedarray)
+- [Base64](#base64)
+- [Web workers](#web-workers)
+- [Http Headers](#http-headers)
+- [MIME type](#mime-type)
+- [window.URL](#raw-data-上传)
+- [FileReader](#raw-data-上传)
+- [FormData](#form-and-formdata)
 
-## AJAX
-> AJAX (Asynchronous JavaScript and XML)代表异步Javascript & XML
+一下API使用时需要重新确认浏览器兼容情况
 
-[MDN - AJAX](https://developer.mozilla.org/zh-CN/docs/AJAX)
-
-以下demo大多基于 XMLHttpRequest 2.0 ，浏览器大都是IE10起，实际使用时需自行确认。
-
-### XMLHttpRequest
-> 不要局限于其字面，XMLHttpRequest可以接受任何格式数据、支持的协议也不仅限于HTTP（file、ftp也可）
+## XMLHttpRequest
+> AJAX (Asynchronous JavaScript and XML)代表异步Javascript & XML, 不要局限于其字面，XMLHttpRequest可以接受任何格式数据、支持的协议也不仅限于HTTP（file、ftp也可）
 
 Demo01
 
 - XMLHttpRequest
-  - getAllResponseHeaders
-  - getResponseHeader
-  - setResponseHeader
-  - open()
-    - method
-      - GET/POST/HEAD等必须大写
-    - url
-      - 同源策略，不能跨域名(域名或端口有差异)访问，
-    - async
-      - 使用异步模式，不要使用false，false会阻塞页面渲染影响用户体验
-  - send()
-    - null / ArrayBuffer / Blob / Document / DOMString(string) / FormData
   - onreadystatechange
-  - responseText
-  - responseType
-    - "" / arraybuffer / blob / document / json / text
-  - responseXML
-  - readyState
-    - 0 (未初始化) open尚未调用
-    - 1 (正在装载) send未调用
-    - 2 (装载完毕) send已调用，且响应头和响应状态已返回
-    - 3 (交互中)   body下载中 responseText已获取部分数据
-    - 4 (完成)  整个请求过程完毕
-  - status
-    - 200 状态码
-      - 1xx 信息
-      - 2xx 成功
-      - 3xx 重定向 如：302 重定向、304 未修改
-      - 4xx 客户端错误 如：403 不允许、 404 未找到
-      - 5xx 服务端错误 如： 503 服务器down、503 超时
-  - statusText
-    - 完整状态描述 “200 ok”
-  - withCredentials
+  - Request
+    - setResponseHeader
+    - open()
+      - method
+        - GET/POST/HEAD等必须大写
+      - url
+        - 同源策略，不能跨域名(域名或端口有差异)访问，
+      - async
+        - 使用异步模式，不要使用false，false会阻塞页面渲染影响用户体验
+    - send()
+      - null / ArrayBuffer / Blob / Document / DOMString(string) / FormData
+    - abort()
+    - timeout
+    - withCredentials
     - [CORS](#cors)
+  - Response
+    - getResponseHeader()
+    - getAllResponseHeaders()
+    - overrideMimeType()
+      - 强制修改返回数据类型
+    - response
+    - responseText
+    - responseURL
+    - responseType
+      - "" / arraybuffer / blob / document / json / text
+    - responseXML
+    - readyState
+      - 0 (未初始化) open尚未调用
+      - 1 (正在装载) send未调用
+      - 2 (装载完毕) send已调用，且响应头和响应状态已返回
+      - 3 (交互中)   body下载中 responseText已获取部分数据
+      - 4 (完成)  整个请求过程完毕
+    - status
+      - 200 状态码
+        - 1xx 信息
+        - 2xx 成功
+        - 3xx 重定向 如：302 重定向、304 未修改
+        - 4xx 客户端错误 如：403 不允许、 404 未找到
+        - 5xx 服务端错误 如： 503 服务器down、503 超时
+    - statusText
+      - 完整状态描述 “200 ok”
+  - 在终止XMLHttpRequest之前不要gc
 
 
 ```js
@@ -81,7 +96,7 @@ function readyCall () {
 }
 ```
 
-#### HTML解析
+### HTML解析
 
 Demo02
 
@@ -90,7 +105,7 @@ Demo02
   - 注意，此时不用调用 `XMLHttpRequest.responseText`
   - FF可以正常识别，chrome不能识别
   - html非xml格式，所以FF识别的文档XML对象存在但是无法使用
-  - `responseType` - `Living Strandard` 浏览器支持情况未知
+  - `responseType`
 - DocumentFragment
   - 将html插入到文档片段中，解析成DOM对象，通过DOM操作，只不过根路径不是`document` 见[DocumentFragment](#documentfragment)
 - RegExp
@@ -129,7 +144,7 @@ function readyCall () {
 }
 ```
 
-#### 二进制
+### 二进制
 
 Demo03
 
@@ -159,7 +174,7 @@ fetch('avatar.jpg', 'arraybuffer').then(function(xhr) {
 
 更多示例请参考 [ArrayBuffer Blob TypedArray](#arraybuffer-blob-typedarray) 。
 
-#### 监测进度
+### 监测进度
 
 Demo04
 
@@ -205,7 +220,7 @@ function loadProgress(e) {
 ![](demo04/console-event.png)
 
 
-#### Raw Data 上传
+### Raw Data 上传
 
 Demo04
 
@@ -276,7 +291,7 @@ if($postdata) {
 }
 ```
 
-#### Form and FormData
+### Form and FormData
 
 - 提交表单
   - AJAX
@@ -329,7 +344,7 @@ The second line.
 ![](demo05/console-rawhttp.png)
 
 
-#### CORS
+### CORS
 > cross-origin sharing standard
 
 - XMLHttpRequest 发起跨站请求
@@ -386,10 +401,18 @@ xhr.send(null);
 - `atob` 解码
 - `btoa` 编码
 
+## Web workers
 
+## Http Headers
 
-参考资料
+- Connection: Keep-Alive
 
+## MIME type
+
+## 参考资料
+
+- https://developer.mozilla.org/zh-CN/docs/AJAX
+- https://xhr.spec.whatwg.org/#dom-xmlhttprequest-upload
 - https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/Sending_and_Receiving_Binary_Data
 - http://shihuacivis.github.io/2015/12/29/20151229_arrayBuffer/
 - https://jiangdl.com/notes/possibilities-of-array-buffer-and-typed-array
