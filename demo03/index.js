@@ -23,7 +23,7 @@ function fetch(url, type) {
   return new Promise(function(resolve, reject) {
     var xhr = new XMLHttpRequest()
     xhr.open('GET', url)
-    if (type) {
+    if (!type) {
       xhr.overrideMimeType("text/plain; charset=x-user-defined");
     } else {
       xhr.responseType = type
