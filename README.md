@@ -18,6 +18,7 @@
 - [window.URL](#raw-data-上传)
 - [FileReader](#raw-data-上传)
 - [FormData](#form-and-formdata)
+- [WebSockets](#websockets)
 
 一下API使用时需要重新确认浏览器兼容情况
 
@@ -394,6 +395,11 @@ xhr.send(null);
   - Float64Array
   - DataView
 
+参考
+
+- https://jiangdl.com/notes/possibilities-of-array-buffer-and-typed-array
+- http://shihuacivis.github.io/2015/12/29/20151229_arrayBuffer/
+
 ## Base64
 > Base64是一组相似的二进制到文本(binary-to-text)的编码规则，使得二进制数据在解释成radix-64的表现形式后能够用ASCII字符串的格式表示出来
 > Base64编码普遍应用于需要通过被设计为处理文本数据的媒介上储存和传输二进制数据而需要编码该二进制数据的场景
@@ -408,6 +414,70 @@ xhr.send(null);
 - Connection: Keep-Alive
 
 ## MIME type
+
+## WebSockets
+
+Demo06
+
+- WebSocket
+- CloseEvent
+- MessageEvent
+- Events
+  - open
+  - message
+  - error
+  - close
+
+### Request
+
+- Sec-WebSocket-Version
+- Sec-WebSocket-Extensions
+- Sec-WebSocket-Key
+- Connection
+- Upgrade: websocket
+
+```
+CONNECT localhost:8099 HTTP/1.1
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:47.0) Gecko/20100101 Firefox/47.0
+Proxy-Connection: keep-alive
+Connection: keep-alive
+Host: localhost:8099
+
+GET / HTTP/1.1
+Host: localhost:8099
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:47.0) Gecko/20100101 Firefox/47.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3
+Accept-Encoding: gzip, deflate
+Sec-WebSocket-Version: 13
+Origin: http://localhost
+Sec-WebSocket-Extensions: permessage-deflate
+Sec-WebSocket-Key: brXxGM42siYVVzk8+XDDWQ==
+Connection: keep-alive, Upgrade
+Pragma: no-cache
+Cache-Control: no-cache
+Upgrade: websocket
+```
+
+### Response
+
+```
+HTTP/1.1 101 Switching Protocols
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Accept: 1ar9FFKGP0t2xT+kSeWXpQfUAKI=
+
+11111111111111111111111111111111111111111111111
+```
+
+![](#demo06/response.png)
+
+参考
+
+- https://www.ibm.com/developerworks/cn/web/1112_huangxa_websocket/
+- https://www.npmjs.com/package/nodejs-websocket
+- https://nodejs.org/api/fs.html
+
 
 ## 参考资料
 
